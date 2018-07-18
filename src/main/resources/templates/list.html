@@ -1,0 +1,64 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="layout :: head"></head>
+<body>
+    <nav th:replace="layout :: header"></nav>
+    <div class="container main-content list" style="margin-top: 80px;">
+        <div class="card green">
+            <i class="mdi-social-notifications"></i>
+        <div th:if="${success}" class="card-content white-text">
+            <button id="alert-1" type="button" class="close-alert" style="cursor:pointer;background: none;border: none;position: absolute;top: 15px;right: 10px;font-size: 20px;color: #ffff;" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">x</span>
+            </button>
+            <span th:text="${success}"></span>
+        </div>
+        </div>
+        <div class="row">
+            <a th:href="@{/employee/create}" class="btn btn-success pull-left">
+                <span class="glyphicon glyphicon-plus"> </span>Add new employee
+            </a>
+            <form class="form-inline pull-right" action="#"
+                th:action="@{/employee/search}" method="GET">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="s" placeholder="Type employee name..."/>
+                </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+        <th:block th:if="${#lists.isEmpty(employees)}">
+            <h3>No empoyee</h3>
+        </th:block>
+
+        <th:block th:unless="${#lists.isEmpty(employees)}">
+            <div class="row">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr th:each="contact,iterStat : ${employees}">
+                            <td th:text="${iterStat.count}"></td>
+                            <td th:text="${contact.name}"></td>
+                            <td th:text="${contact.phone}"></td>
+                            <td><a th:href="@{/employee/{id}/edit(id=${contact.id})}"><i class="small material-icons">add_to_photos</i></a></td>
+                            <td><a th:href="@{/employee/{id}/delete(id=${contact.id})}"><i class="small material-icons">cancel</i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </th:block>
+    </div>
+</body>
+<script>
+    $(".close-alert").click(function(e){
+        $(this).parent().remove();
+        e.preventDefault();
+    });
+</script>
+</html>
